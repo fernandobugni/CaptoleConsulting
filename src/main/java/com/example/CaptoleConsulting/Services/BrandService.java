@@ -1,6 +1,6 @@
 package com.example.CaptoleConsulting.Services;
 
-import com.example.CaptoleConsulting.Entities.Brands;
+import com.example.CaptoleConsulting.Entities.Brand;
 import com.example.CaptoleConsulting.Repositories.BrandRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,7 +13,7 @@ public class BrandService {
     @Autowired
     private BrandRepository brandRepository;
 
-    public List<Brands> list(){
+    public List<Brand> list(){
         return brandRepository.findAll();
     }
 }
