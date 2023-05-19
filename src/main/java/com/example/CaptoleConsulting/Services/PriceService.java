@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.Comparator;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -26,11 +25,7 @@ public class PriceService {
     @Autowired
     private ProductRepository productRepository;
 
-    public List<Price> list(){
-        return (List<Price>) priceRepository.findAll();
-    }
-
-    public Optional<Price> list(Integer brand_id, Integer product_id, LocalDateTime datetime){
+    public Optional<Price> getPriceAtThisMoment(Integer brand_id, Integer product_id, LocalDateTime datetime){
 
         Brand brand = brandRepository.findById(brand_id).get();
         Product product = productRepository.findById(product_id).get();

@@ -1,11 +1,7 @@
 package com.example.CaptoleConsulting.Controllers;
 
-import com.example.CaptoleConsulting.Entities.Brand;
 import com.example.CaptoleConsulting.Entities.Price;
-import com.example.CaptoleConsulting.Entities.Product;
-import com.example.CaptoleConsulting.Services.BrandService;
 import com.example.CaptoleConsulting.Services.PriceService;
-import com.example.CaptoleConsulting.Services.ProductService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.slf4j.LoggerFactory;
@@ -18,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -29,30 +24,9 @@ public class PriceController {
     private static final ObjectMapper mapper = new ObjectMapper();
 
     @Autowired
-    BrandService brandService;
-
-    @Autowired
-    ProductService productService;
-
-    @Autowired
     PriceService priceService;
 
-    @GetMapping(value = "/getBrands")
-    public Brand getBrands(){
-        return brandService.list().get(0);
-    }
-
-    @GetMapping(value = "/getProducts")
-    public Product getProducts(){
-        return productService.list().get(0);
-    }
-
-    @GetMapping(value = "/getPrices")
-    public List<Price> getPrices(){
-        return priceService.list();
-    }
-
-    @GetMapping(value = "/getPriceFromData/brand/{brand_id}/product/{product_id}", produces = "application/json")
+    @GetMapping(value = "/getPriceAtThisMoment/brand/{brand_id}/product/{product_id}", produces = "application/json")
     public ObjectNode getPriceFromData(
             @RequestParam(value = "localDateTime")
             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) //2011-12-03T10:15:30
@@ -63,9 +37,9 @@ public class PriceController {
             Integer brand_id
             ){
         log.info(localDateTime.toString());
-        log.info("brand_id: "+brand_id.toString()+", product_id: "+product_id.toString()+", localdatetime: "+localDateTime.toString());
+        log.info("Request of brand_id: "+brand_id.toString()+", product_id: "+product_id.toString()+", localdatetime: "+localDateTime.toString());
 
-        Optional<Price> price = priceService.list(brand_id, product_id, localDateTime);
+        Optional<Price> price = priceService.getPriceAtThisMoment(brand_id, product_id, localDateTime);
         if(price.isEmpty()) {
             return mapper.createObjectNode();
         }

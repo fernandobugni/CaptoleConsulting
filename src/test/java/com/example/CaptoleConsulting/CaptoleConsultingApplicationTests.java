@@ -19,7 +19,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import static org.hamcrest.CoreMatchers.is;
 
@@ -34,26 +33,38 @@ class CaptoleConsultingApplicationTests {
 	private MockMvc mvc;
 
 	@Test
-	void example() throws Exception{
-
-		mvc.perform(get("/getPrices")
-				.contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk())
-				.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
+	void petitionAt10hsThe14thJune() throws Exception {
+		testMethodGetPriceAtThisMoment("1", "35455",  LocalDateTime.of(2020, 06, 14, 10, 0, 0), "35.5");
 	}
 
 	@Test
-	void example1() throws Exception{
+	void petitionAt16hsThe14thJune() throws Exception {
+		testMethodGetPriceAtThisMoment("1", "35455",  LocalDateTime.of(2020, 06, 14, 16, 0, 0), "25.45");
+	}
 
-		String brand_id = "1";
-		String product_id = "35455";
-		LocalDateTime datetime = LocalDateTime.of(2020, 06, 14, 10, 0, 0);
+	@Test
+	void petitionAt21hsThe14thJune() throws Exception {
+		testMethodGetPriceAtThisMoment("1", "35455",  LocalDateTime.of(2020, 06, 14, 21, 0, 0), "35.5");
+	}
+
+	@Test
+	void petitionAt10hsThe15thJune() throws Exception {
+		testMethodGetPriceAtThisMoment("1", "35455",  LocalDateTime.of(2020, 06, 15, 10, 0, 0), "30.5");
+	}
+
+	@Test
+	void petitionAt21hsThe16thJune() throws Exception {
+		testMethodGetPriceAtThisMoment("1", "35455",  LocalDateTime.of(2020, 06, 16, 21, 0, 0), "38.95");
+	}
+
+	private void testMethodGetPriceAtThisMoment(String brand_id, String product_id, LocalDateTime datetime, String expected_price) throws Exception{
+
 		String datetimestr = DateTimeFormatter.ISO_LOCAL_DATE_TIME.format(datetime);
 
-		mvc.perform(get("/getPriceFromData/brand/{brand_id}/product/{product_id}?localDateTime={datetimestr}", brand_id, product_id, datetimestr)
+		mvc.perform(get("/getPriceAtThisMoment/brand/{brand_id}/product/{product_id}?localDateTime={datetimestr}", brand_id, product_id, datetimestr)
 						.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())
 				.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-				.andExpect(jsonPath("$.price").value("35.5"));
+				.andExpect(jsonPath("$.price").value(expected_price));
 	}
 }
