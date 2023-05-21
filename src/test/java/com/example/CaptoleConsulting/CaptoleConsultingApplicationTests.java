@@ -67,4 +67,20 @@ class CaptoleConsultingApplicationTests {
 				.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
 				.andExpect(jsonPath("$.price").value(expected_price));
 	}
+
+	@Test
+	void petitionNoElement() throws Exception {
+		mvc.perform(get("/getPriceAtThisMoment/brand/1/product/35456?localDateTime=2025-06-14T10:00:00")
+						.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isConflict())
+				.andExpect(content().string("Some elements are not present"));
+	}
+
+	@Test
+	void petitionEmpty() throws Exception {
+		mvc.perform(get("/getPriceAtThisMoment/brand/1/product/35455?localDateTime=2025-06-14T10:00:00")
+						.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andExpect(content().string("{}"));
+	}
 }

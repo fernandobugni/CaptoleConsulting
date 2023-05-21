@@ -36,7 +36,6 @@ public class PriceController {
             @PathVariable("brand_id")
             Integer brand_id
             ){
-        log.info(localDateTime.toString());
         log.info("Request of brand_id: "+brand_id.toString()+", product_id: "+product_id.toString()+", localdatetime: "+localDateTime.toString());
 
         Optional<Price> price = priceService.getPriceAtThisMoment(brand_id, product_id, localDateTime);

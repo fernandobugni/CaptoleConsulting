@@ -16,7 +16,8 @@ grande, se podria dividir un archivo para la estructura y otro para la ingesta d
 lo agregué todo junto. 
 
 Definí tres tablas llamadas ```Brand```, ```Product``` y ```Price``` para dividir mejor las entidades. Todas poseen 
-su ```FK``` para referenciarse. Si esto fuera una base de datos productiva, desde ya que habría que agregar índices 
+su ```Foreign Key``` para referenciarse. Si esto fuera una base de datos productiva, desde ya que habría que agregar 
+índices 
 para realizar las consultas productivas. En este caso, no los agregué ya que son pocos registros. 
 
 ## Repositorios y servicios
@@ -50,8 +51,9 @@ ControllerAdvicer en ```RestResponseEntityExceptionHandler```.
 ## Tests unitarios y de integración
 El ejercicio pedía realizar tests al endpoint creado, es por esto que se agregaron tests en 
 ```CaptoleConsultingApplicationTests``` donde se agregaron los tests pedidos chequeando sus resultados. Al tener 
-todos los tests una misma estructura, se encapsuló el método principal en un método privado. 
+todos los tests una misma estructura, se encapsuló el método principal en un método privado llamado ```testMethodGetPriceAtThisMoment```. 
 
 Estos tests levantan el controller y le realizan un pedido a la API, para luego chequear su valor. Se podría hacer 
 los tests más liviano solamente chequeando este método y levantando solo su Bean, pero no estariamos chequenado la 
-parte del Controller. 
+parte del Controller. También otra forma podria ser mockear las respuestas antes en los pedidos de los Repositories, 
+pero esta por afuera del scope del ejercicio. Además de los tests pedidos, agregué los tests ```petitionNoElement``` y ```petitionEmpty``` para chequear el ExceptioHandler si no hay un elemento presente y por si no hay ningún price al consultar
